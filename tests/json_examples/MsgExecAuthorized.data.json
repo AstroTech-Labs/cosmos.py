@@ -1,0 +1,13 @@
+[{
+    "@type": "/cosmos.authz.v1beta1.MsgExec",
+    "grantee": "terra...",
+    "msgs": [{
+        "@type": "/cosmos.bank.v1beta1.MsgSend",
+        "from_address": "terra...",
+        "to_address": "terra...",
+        "amount": [{
+            "denom": "ukrw",
+            "amount": "999"
+        }]
+    }]
+}]
