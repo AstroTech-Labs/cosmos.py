@@ -35,7 +35,7 @@ $ pip install -U cosmos_SDK
 ## Usage Examples
 
 ```
-from terra_sdk.client.lcd import LCDClient
+from cosmos_sdk.client.lcd import LCDClient
 from cosmos_sdk.key.mnemonic import MnemonicKey
 
 mnemonic = <MNEMONIC_PHRASE>
