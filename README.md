@@ -55,5 +55,5 @@ Community contribution, whether it's a new feature, correction, bug report, addi
 
 # License
 
-This reporitory was forked from  <a href="https://github.com/terra-money/terra.py">Cosmos SDK</a> and is being repurposed from there on. 
+This reporitory was forked from  <a href="https://github.com/terra-money/terra.py">Terra SDK</a> and is being repurposed from there on. 
 
