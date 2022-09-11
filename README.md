@@ -27,7 +27,7 @@ Cosmos.py SDK requires <a href="https://www.python.org/downloads/">Python v3.7+<
 Cosmos SDK can be installed (preferably in a `virtual environment` from PyPI using `pip`) as follows:
   
 ```
-$ pip install -U cosmos.py
+$ pip install -U cosmos_SDK
 ```
 
 <sub>_You might have `pip3` installed instead of `pip`; proceed according to your own setup._<sub>

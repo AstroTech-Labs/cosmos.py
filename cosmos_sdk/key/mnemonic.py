@@ -4,10 +4,12 @@ from bip32utils import BIP32_HARDEN, BIP32Key
 from mnemonic import Mnemonic
 
 from .raw import RawKey
+from .chain_mapping import COIN_TYPES_MAP
 
-__all__ = ["MnemonicKey", "LUNA_COIN_TYPE"]
+__all__ = ["MnemonicKey"]
 
-LUNA_COIN_TYPE = 330
+
+
 
 
 class MnemonicKey(RawKey):
@@ -50,13 +52,20 @@ class MnemonicKey(RawKey):
     def __init__(
         self,
         mnemonic: str = None,
+        chain_name: str = "terra",
         account: int = 0,
         index: int = 0,
-        coin_type: int = LUNA_COIN_TYPE,
+        coin_type: int = 118,
     ):
         if mnemonic is None:
             mnemonic = Mnemonic("english").generate(256)
         seed = Mnemonic("english").to_seed(mnemonic)
+
+        # get Chain's coin_type
+        coin_type = COIN_TYPES_MAP[chain_name]
+        if coin_type is None:
+            raise ValueError(f"Invalid chain name: {chain_name}")
+
         root = BIP32Key.fromEntropy(seed)
         # derive from hdpath
         child = (
@@ -67,8 +76,10 @@ class MnemonicKey(RawKey):
             .ChildKey(index)
         )
 
-        super().__init__(child.PrivateKey())
+        private_key = child.PrivateKey()
+        super().__init__(private_key, chain_name)
         self.mnemonic = mnemonic
         self.coin_type = coin_type
         self.account = account
         self.index = index
+

@@ -24,6 +24,8 @@ from cosmos_sdk.core.signature_v2 import Descriptor
 from cosmos_sdk.core.signature_v2 import Single as SingleDescriptor
 from cosmos_sdk.core.tx import AuthInfo, SignerInfo, SignMode, Tx
 
+from .chain_mapping import COIN_PREFIXES_MAP, COIN_VALIDATOR_PREFIXES_MAP, COIN_VALIDATOR_PUB_PREFIXES_MAP, COIN_PUB_PREFIXES_MAP
+
 __all__ = ["Key", "SignOptions"]
 
 
@@ -42,6 +44,8 @@ class Key:
         public_key (Optional[bytes]): compressed public key bytes,
     """
 
+    chain_name = "terra"
+
     public_key: Optional[PublicKey]
     """Compressed public key bytes, used to derive :data:`raw_address` and :data:`raw_pubkey`."""
 
@@ -55,8 +59,9 @@ class Key:
     pubkeys.
     """
 
-    def __init__(self, public_key: Optional[PublicKey] = None):
+    def __init__(self, public_key: Optional[PublicKey] = None, chain_name: str = "terra"):
         self.public_key = public_key
+        self.chain_name = chain_name
         if public_key:
             self.raw_address = address_from_public_key(public_key)
             self.raw_pubkey = amino_pubkey_from_public_key(public_key)
@@ -78,7 +83,7 @@ class Key:
 
     @property
     def acc_address(self) -> AccAddress:
-        """Terra Bech32 account address. Default derivation via :data:`public_key` is provided.
+        """Bech32 account address. Default derivation via :data:`public_key` is provided.
 
         Raises:
             ValueError: if Key was not initialized with proper public key
@@ -88,11 +93,11 @@ class Key:
         """
         if not self.raw_address:
             raise ValueError("could not compute acc_address: missing raw_address")
-        return AccAddress(get_bech("terra", self.raw_address.hex()))
+        return AccAddress(get_bech(COIN_PREFIXES_MAP[self.chain_name], self.raw_address.hex()))
 
     @property
     def val_address(self) -> ValAddress:
-        """Terra Bech32 validator operator address. Default derivation via :data:`public_key` is provided.
+        """Bech32 validator operator address. Default derivation via :data:`public_key` is provided.
 
         Raises:
             ValueError: if Key was not initialized with proper public key
@@ -102,11 +107,11 @@ class Key:
         """
         if not self.raw_address:
             raise ValueError("could not compute val_address: missing raw_address")
-        return ValAddress(get_bech("terravaloper", self.raw_address.hex()))
+        return ValAddress(get_bech(COIN_VALIDATOR_PREFIXES_MAP[self.chain_name], self.raw_address.hex()))
 
     @property
     def acc_pubkey(self) -> AccPubKey:
-        """Terra Bech32 account pubkey. Default derivation via :data:`public_key` is provided.
+        """Bech32 account pubkey. Default derivation via :data:`public_key` is provided.
 
         Raises:
             ValueError: if Key was not initialized with proper public key
@@ -116,11 +121,11 @@ class Key:
         """
         if not self.raw_pubkey:
             raise ValueError("could not compute acc_pubkey: missing raw_pubkey")
-        return AccPubKey(get_bech("terrapub", self.raw_pubkey.hex()))
+        return AccPubKey(get_bech(COIN_PUB_PREFIXES_MAP[self.chain_name], self.raw_pubkey.hex()))
 
     @property
     def val_pubkey(self) -> ValPubKey:
-        """Terra Bech32 validator pubkey. Default derivation via ``public_key`` is provided.
+        """Bech32 validator pubkey. Default derivation via ``public_key`` is provided.
 
         Raises:
             ValueError: if Key was not initialized with proper public key
@@ -130,7 +135,7 @@ class Key:
         """
         if not self.raw_pubkey:
             raise ValueError("could not compute val_pubkey: missing raw_pubkey")
-        return ValPubKey(get_bech("terravaloperpub", self.raw_pubkey.hex()))
+        return ValPubKey(get_bech(COIN_VALIDATOR_PUB_PREFIXES_MAP[self.chain_name], self.raw_pubkey.hex()))
 
     def create_signature_amino(self, sign_doc: SignDoc) -> SignatureV2:
         if self.public_key is None:

@@ -40,9 +40,11 @@ class RawKey(Key):
         """
         return cls(bytes.fromhex(private_key_hex))
 
-    def __init__(self, private_key: bytes):
+    def __init__(self, private_key: bytes, chain_name: str = "terra"):
         public_key = compute_public_key(private_key)
-        super().__init__(public_key)
+        print(f"public_key ${public_key} chain_name = {chain_name}")
+
+        super().__init__(public_key, chain_name)
         self.private_key = private_key
 
     def sign(self, payload: bytes) -> bytes:

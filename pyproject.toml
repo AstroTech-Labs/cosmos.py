@@ -19,7 +19,7 @@ license = "MIT"
 packages = [{ include = "cosmos_sdk" }]
 readme = "README.md"
 repository = "https://github.com/terra-money/terra.py"
-version = "0.0.0"
+version = "0.0.1"
 
 [tool.poetry.dependencies]
 aiohttp = "^3.8.1"
