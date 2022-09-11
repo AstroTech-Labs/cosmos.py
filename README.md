@@ -32,6 +32,25 @@ $ pip install -U cosmos_SDK
 
 <sub>_You might have `pip3` installed instead of `pip`; proceed according to your own setup._<sub>
 
+## Usage Examples
+
+```
+from terra_sdk.client.lcd import LCDClient
+from cosmos_sdk.key.mnemonic import MnemonicKey
+
+mnemonic = <MNEMONIC_PHRASE>
+
+# Terra client
+terra_client = LCDClient(chain_id="phoenix-1", url="https://phoenix-lcd.terra.dev")
+mk = MnemonicKey(mnemonic,"terra")
+terra_wallet = terra_client.wallet(mk)
+
+# Persistence client
+persistence_client = LCDClient(chain_id="core-1", url="http://rest.core.persistence.one")
+mk = MnemonicKey(mnemonic,"persistence")
+persistence_wallet = persistence_client.wallet(mk)
+```
+
 
 ## Dependencies
 
